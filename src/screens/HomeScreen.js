@@ -42,7 +42,7 @@ export default function HomeScreen () {
     const getPermissionAsync = async () => {
       if (Platform.OS !== 'web') {
         const permission = await MediaLibrary.requestPermissionsAsync()
-        if (permission.status !== 'granted') {
+        if (!permission.granted) {
           alert('Sorry, we need media permissions to make this work!')
         } else {
           getAlbums()

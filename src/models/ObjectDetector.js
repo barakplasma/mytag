@@ -32,24 +32,33 @@ export default class ObjectDetector {
   }
 
   async classifyImage (imgUri) {
-    const cachedPreds = await this.DETECTION_CACHE.getPredictions(imgUri)
-    if (cachedPreds) {
-      return cachedPreds
+    try {
+      const cachedPreds = await this.DETECTION_CACHE.getPredictions(imgUri)
+      if (cachedPreds) {
+        return cachedPreds
+      }
+
+      if (!this._isDetectorReady()) {
+        console.log('Detector not yet ready, waiting...')
+        await waitFor((_) => this.backendReady === true)
+        console.log('Detector ready, lets go!')
+      }
+
+      const imageTensor = await _uriToTensor(imgUri)
+      const predictions = await this.model.detect(imageTensor)
+
+      // Clean up tensor to prevent memory leaks
+      imageTensor.dispose()
+
+      // console.log("PRED", predictions);
+      await this.DETECTION_CACHE.savePredictions(imgUri, predictions)
+
+      return predictions
+    } catch (error) {
+      console.error('Error classifying image:', imgUri, error)
+      // Return empty predictions on error so processing can continue
+      return []
     }
-
-    if (!this._isDetectorReady()) {
-      console.log('Detector not yet ready, waiting...')
-      await waitFor((_) => this.backendReady === true)
-      console.log('Detector ready, lets go!')
-    }
-
-    const imageTensor = await _uriToTensor(imgUri)
-    const predictions = await this.model.detect(imageTensor)
-
-    // console.log("PRED", predictions);
-    this.DETECTION_CACHE.savePredictions(imgUri, predictions)
-
-    return predictions
   }
 }
 

@@ -1,9 +1,8 @@
 import React, { useLayoutEffect } from 'react'
 
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, useColorScheme } from 'react-native'
 import { ShareButton } from '../components/ShareButton'
 import DetectedImage from '../components/DetectedImage'
-import { useColorScheme } from 'react-native-appearance'
 import { DarkTheme, LightTheme } from '../config/themes'
 
 export default function ImageScreen ({ route, navigation }) {
@@ -33,7 +32,7 @@ export default function ImageScreen ({ route, navigation }) {
 
 // Get dynamic text styling , separated to avoid adding everything inline in future
 const getTextStyle = (colorScheme) => {
-  const { colors } = colorScheme === 'light' || colorScheme === 'no-preference' ? LightTheme : DarkTheme
+  const { colors } = colorScheme === 'light' || colorScheme === null ? LightTheme : DarkTheme
   return [
     styles.text,
     {

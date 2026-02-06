@@ -11,17 +11,28 @@ export default class TagsCollection {
   }
 
   async addImage (imgMetadata) {
-    const taggedImage = await this.tagFinder.findTags(imgMetadata)
-
-    this._assignImageToCollections(taggedImage)
+    try {
+      const taggedImage = await this.tagFinder.findTags(imgMetadata)
+      this._assignImageToCollections(taggedImage)
+      return true
+    } catch (error) {
+      console.error('Error processing image:', imgMetadata.uri, error)
+      return false
+    }
   }
 
   async useImages (images, imageClassifiedCallback) {
     for (let i = 0; i < images.length; i++) {
       const img = images[i]
 
-      await this.addImage(img)
+      try {
+        await this.addImage(img)
+      } catch (error) {
+        console.error('Error adding image:', error)
+        // Continue processing other images even if one fails
+      }
 
+      // Always update progress, even if an image failed
       imageClassifiedCallback(
         this.collectionNames,
         (i + 1) / images.length

@@ -1,5 +1,5 @@
 import React from 'react'
-import { LogBox } from 'react-native' // Ignore log notification by message
+import { LogBox, useColorScheme } from 'react-native' // Ignore log notification by message
 
 import { NavigationContainer } from '@react-navigation/native'
 import {
@@ -13,7 +13,6 @@ import ImageScreen from './src/screens/ImageScreen'
 import BrowseImagesScreen from './src/screens/BrowseImagesScreen'
 import { TagsContextProvider } from './src/utils/TagsContext'
 
-import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 import { LightTheme, DarkTheme } from './src/config/themes'
 
 LogBox.ignoreLogs(['tf.nonMaxSuppression'])
@@ -23,11 +22,10 @@ const Stack = createStackNavigator()
 export default function App () {
   const colorScheme = useColorScheme()
 
-  const MyTheme = colorScheme === 'light' || colorScheme === 'no-preference' ? LightTheme : DarkTheme
+  const MyTheme = colorScheme === 'light' || colorScheme === null ? LightTheme : DarkTheme
 
   return (
-    <AppearanceProvider>
-      <TagsContextProvider>
+    <TagsContextProvider>
       <NavigationContainer theme={MyTheme}>
         <Stack.Navigator
           initialRouteName="Home"
@@ -57,6 +55,5 @@ export default function App () {
         </Stack.Navigator>
       </NavigationContainer>
     </TagsContextProvider>
-    </AppearanceProvider>
   )
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, useColorScheme } from 'react-native'
 import * as Progress from 'expo-progress'
-import { useColorScheme } from 'react-native-appearance'
 import { DarkTheme, LightTheme } from '../config/themes'
 
 export default function LoadingClassificationsBar ({ completedPercentage }) {
@@ -40,7 +39,7 @@ export default function LoadingClassificationsBar ({ completedPercentage }) {
 
 // Get dynamic text styling , separated to avoid adding everything inline in future
 const getTextStyle = (colorScheme) => {
-  const { colors } = colorScheme === 'light' || colorScheme === 'no-preference' ? LightTheme : DarkTheme
+  const { colors } = colorScheme === 'light' || colorScheme === null ? LightTheme : DarkTheme
   return [
     styles.text,
     {
