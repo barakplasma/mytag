@@ -26,11 +26,19 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.cryptoboid.mytag",
-      "permissions": ["WRITE_EXTERNAL_STORAGE","READ_EXTERNAL_STORAGE"]
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "userInterfaceStyle": "automatic"
+    "userInterfaceStyle": "automatic",
+    "extra": {
+      "eas": {
+        "projectId": "9b39b0db-d292-4671-99fc-a92ef0753080"
+      }
+    }
   }
 }
