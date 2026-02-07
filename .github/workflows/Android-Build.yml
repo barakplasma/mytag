@@ -53,6 +53,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Ensure EAS project is configured
+        run: |
+          if ! grep -q 'projectId' app.json; then
+            echo "No EAS projectId found in app.json, running eas init..."
+            npx eas-cli init --non-interactive
+          fi
+
       - name: Build Android APK
         run: |
           npx eas-cli build --platform android --profile preview --non-interactive --local --output=./mytag.apk
